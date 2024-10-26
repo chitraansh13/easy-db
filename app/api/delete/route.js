@@ -2,16 +2,16 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
     try {
-        const { tablename, columns, conditions } = await req.json();
+        const { tablename, conditions } = await req.json();
 
-        if (!tablename || !Array.isArray(columns) || columns.length === 0) {
-            throw new Error('Invalid input: tablename and columns are required.');
+        if (!tablename) {
+            throw new Error('Invalid input: tablename is required.');
         }
 
-        let query = `SELECT ${conditions?.distinct ? 'DISTINCT ' : ''}${columns.join(', ')} FROM ${tablename}`;
+        let query = `DELETE FROM ${tablename}`;
 
         if (conditions) {
-            const { where, orderBy, limit, offset } = conditions;
+            const { where, orderBy, limit } = conditions;
 
             if (where && Array.isArray(where) && where.length > 0) {
                 const whereClauses = where.map(condition => {
@@ -37,10 +37,6 @@ export async function POST(req) {
 
             if (limit !== undefined) {
                 query += ` LIMIT ${limit}`;
-            }
-
-            if (offset !== undefined) {
-                query += ` OFFSET ${offset}`;
             }
         }
 
