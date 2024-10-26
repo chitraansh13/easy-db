@@ -10,7 +10,7 @@ export async function POST(req) {
             throw new Error('Invalid input: tablename, columns, and databaseName are required.');
         }
 
-        //const userRole = await getUserRole(userId, databaseName);
+        // const userRole = await getUserRole(userId, databaseName);
 
         // if (userRole !== 'master' && userRole !== 'editor') {
         //     throw new Error('Permission denied: You do not have the required permissions to create a table.');
@@ -21,10 +21,13 @@ export async function POST(req) {
         }
 
         for (const column of columns) {
-            if (!isValidName(column)) {
-                throw new Error(`Invalid input: column name "${column}" contains invalid characters or special keywords.`);
+            if (!isValidName(column.name)) {
+                throw new Error(`Invalid input: column name "${column.name}" contains invalid characters or special keywords.`);
             }
         }
+
+        // Hardcoded auto-increment column without primary key
+        const autoIncrementColumn = 'SerialNo SERIAL';
 
         const columnDefinitions = columns.map((col) => {
             const { name, datatype, constraints } = col;
@@ -52,6 +55,9 @@ export async function POST(req) {
 
             return colDefinition;
         });
+
+        // Add the auto-increment column as the first column
+        columnDefinitions.unshift(autoIncrementColumn);
 
         const query = `CREATE TABLE IF NOT EXISTS ${tablename} (${columnDefinitions.join(', ')});`;
 

@@ -5,7 +5,6 @@ export async function POST(req) {
     try {
         const { table1, table2, joinType, joinCondition } = await req.json();
 
-        
         if (!table1 || !table2 || !joinType) {
             throw new Error('Missing required parameters');
         }
@@ -26,7 +25,17 @@ export async function POST(req) {
             if (!joinCondition) {
                 throw new Error('Missing join condition for the specified join type');
             }
-            query = `SELECT * FROM ${table1} ${joinType.toUpperCase()} ${table2} ON ${joinCondition}`;
+
+            // Exclude SerialNo from the SELECT statement
+            query = `
+                SELECT 
+                    ${table1}.*, 
+                    ${table2}.* 
+                FROM ${table1} 
+                ${joinType.toUpperCase()} ${table2} 
+                ON ${joinCondition}
+                WHERE ${table1}.SerialNo IS NULL AND ${table2}.SerialNo IS NULL
+            `;
         }
 
         return NextResponse.json({ query }, { status: 200 });

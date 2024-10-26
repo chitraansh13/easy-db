@@ -6,22 +6,20 @@ export async function POST(req) {
     try {
         const { tablename, columns, values } = await req.json();
 
-        if ( !tablename || !Array.isArray(columns) || columns.length === 0 || !Array.isArray(values) || values.length === 0) {
-            throw new Error('Invalid input: userId, tablename, columns, values, and databaseName are required.');
+        if (!tablename || !Array.isArray(columns) || columns.length === 0 || !Array.isArray(values) || values.length === 0) {
+            throw new Error('Invalid input: tablename, columns, and values are required.');
         }
 
         if (columns.length !== values.length) {
             throw new Error('Invalid input: columns and values length mismatch.');
         }
 
-        // const userRole = await getUserRole(userId, databaseName);
+        // Ensure SerialNo is not included in the columns and values
+        const filteredColumns = columns.filter(column => column.toLowerCase() !== 'serialno');
+        const filteredValues = values.filter((_, index) => columns[index].toLowerCase() !== 'serialno');
 
-        // if (userRole !== 'master' && userRole !== 'editor') {
-        //     throw new Error('Permission denied: You do not have the required permissions to insert into the table.');
-        // }
-
-        const columnNames = columns.join(', ');
-        const valuePlaceholders = values.map(value => {
+        const columnNames = filteredColumns.join(', ');
+        const valuePlaceholders = filteredValues.map(value => {
             if (typeof value === 'string') {
                 return `'${value}'`;
             }

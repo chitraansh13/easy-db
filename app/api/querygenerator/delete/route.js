@@ -2,25 +2,20 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
     try {
-        const { tablename, deletetype, conditions} = await req.json();
+        const { tablename, deletetype, conditions } = await req.json();
 
-        // if (!tablename || !databaseName) {
-        //     throw new Error('Invalid input: tablename and databaseName are required.');
-        // }
+        if (!tablename) {
+            throw new Error('Invalid input: tablename is required.');
+        }
 
         let query = `DELETE FROM ${tablename}`;
 
-        if(deletetype){
-
-            if (deletetype === 'first') {
-                query += ` WHERE ctid = (SELECT ctid FROM ${tablename} ORDER BY ctid LIMIT 1)`;
-            } else if (deletetype === 'last') {
-                query += ` WHERE ctid = (SELECT ctid FROM ${tablename} ORDER BY ctid DESC LIMIT 1)`;
-            } else {
-                throw new Error('Invalid delete type. Use "first" or "last".');
+        if (deletetype !== undefined) {
+            if (typeof deletetype !== 'number' || deletetype <= 0) {
+                throw new Error('Invalid delete type. It must be a positive integer representing the SerialNo.');
             }
+            query += ` WHERE "SerialNo" = ${deletetype}`;
         }
-
 
         if (conditions) {
             const { where, orderBy, limit } = conditions;
@@ -34,7 +29,7 @@ export async function POST(req) {
                     }
                     return `${column} ${operator} '${value}'`;
                 });
-                query += ` WHERE ${whereClauses.join(' AND ')}`;
+                query += ` AND ${whereClauses.join(' AND ')}`;
             }
 
             // Build ORDER BY clause
