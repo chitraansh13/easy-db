@@ -1,11 +1,31 @@
-// app/main/Main.tsx
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './main.module.css';
 import CreateDbButton from './CreateDbButton';
 
 const Main = () => {
+    const [databases, setDatabases] = useState<string[]>([]);
+
+    // Fetch databases
+    const fetchDatabases = async () => {
+        try {
+            const response = await fetch('/api/querygenerator/show/db');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch databases: ${response.statusText}`);
+            }
+            const data = await response.json();
+            setDatabases(data.databases);
+        } catch (error) {
+            console.error('Error fetching databases:', error);
+        }
+    };
+
+    // Refresh list when the component mounts
+    useEffect(() => {
+        fetchDatabases();
+    }, []);
+
     return (
         <div className={styles.wrapper}>
             <nav className={styles.mainNav}>
@@ -18,13 +38,17 @@ const Main = () => {
 
             <aside className={styles.mainSide}>
                 <h2 className={styles.sideTitle}>Your Databases</h2>
-                <CreateDbButton />
+                <CreateDbButton onDatabaseCreated={fetchDatabases} />
                 <div className={styles.sideLinks}>
-                    {['Database 1', 'Database 2', 'Database 3', 'Database 4'].map((dbName, index) => (
-                        <a key={index} href="#" className={styles.dbLinks}>
-                            {dbName}
-                        </a>
-                    ))}
+                    {databases.length > 0 ? (
+                        databases.map((dbName, index) => (
+                            <a key={index} href="#" className={styles.dbLinks}>
+                                {dbName}
+                            </a>
+                        ))
+                    ) : (
+                        <p>No databases available.</p>
+                    )}
                 </div>
             </aside>
 

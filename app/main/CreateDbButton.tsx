@@ -4,10 +4,14 @@ import React, { useState } from 'react';
 import styles from './main.module.css';
 import Modal from './Modal';
 
-const CreateDbButton = () => {
+interface CreateDbButtonProps {
+    onDatabaseCreated: () => void;
+}
+
+const CreateDbButton: React.FC<CreateDbButtonProps> = ({ onDatabaseCreated }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [query, setQuery] = useState('');
-    const [dbname, setDbname] = useState(''); // Store the db name to run the query
+    const [dbname, setDbname] = useState('');
 
     const handleCreateDb = async () => {
         const dbNameInput = prompt("Enter the database name:");
@@ -16,7 +20,7 @@ const CreateDbButton = () => {
             return;
         }
 
-        setDbname(dbNameInput); // Set dbname for later execution
+        setDbname(dbNameInput);
 
         try {
             const response = await fetch('/api/querygenerator/create/db', {
@@ -30,13 +34,13 @@ const CreateDbButton = () => {
             const data = await response.json();
             if (response.ok) {
                 setQuery(data.query);
-                setIsModalOpen(true); // Show the query in the modal
+                setIsModalOpen(true);
             } else {
                 alert(`Error: ${data.error}`);
             }
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-            alert('Error creating database: ' + errorMessage);
+            console.error('Error creating database:', error);
+            alert('Error creating database');
         }
     };
 
@@ -47,36 +51,34 @@ const CreateDbButton = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ dbname, execute: true }), // Send execute flag
+                body: JSON.stringify({ dbname, execute: true }),
             });
 
             const data = await response.json();
             if (response.ok) {
                 alert('Database created successfully');
+                onDatabaseCreated(); // Refresh the database list
             } else {
                 alert(`Error: ${data.error}`);
             }
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-            alert('Error running query: ' + errorMessage);
+            console.error('Error running query:', error);
+            alert('Error running query');
         } finally {
-            setIsModalOpen(false); // Close modal after running query
+            setIsModalOpen(false);
         }
     };
 
     return (
         <>
-            <button
-                className={styles.createdb}
-                onClick={handleCreateDb}
-            >
+            <button className={styles.createdb} onClick={handleCreateDb}>
                 Create New
             </button>
-            <Modal 
-                isOpen={isModalOpen} 
-                onClose={() => setIsModalOpen(false)} 
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
                 query={query}
-                onRunQuery={handleRunQuery} 
+                onRunQuery={handleRunQuery}
             />
         </>
     );
