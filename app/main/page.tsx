@@ -1,8 +1,11 @@
+// app/main/Main.tsx
+"use client";
+
 import React from 'react';
 import styles from './main.module.css';
-import CreateDbButton from './createDbButton';
+import CreateDbButton from './CreateDbButton';
 
-const Main = async () => {
+const Main = () => {
     return (
         <div className={styles.wrapper}>
             <nav className={styles.mainNav}>

@@ -1,3 +1,6 @@
+// app/main/CreateDbButton.tsx
+"use client";
+
 import React from 'react';
 import styles from './main.module.css';
 
@@ -10,7 +13,7 @@ const CreateDbButton = () => {
         }
 
         try {
-            const response = await fetch('/api/querygenerator/create/db/route.js', {
+            const response = await fetch('/api/querygenerator/create/db', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
