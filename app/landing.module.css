@@ -3,11 +3,14 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 100vh;
     background-color: #111827;
     color: #CACACA;
     padding: 5% 15%;
     text-align: center;
+}
+
+.landingMain{
+    max-height: 100vh;
 }
 
 .landingNav {
