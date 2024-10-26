@@ -1,0 +1,21 @@
+.loginBody{
+    height: 100vh;
+    background-color: #111827;
+    color: #CACACA;
+    padding: 10% 15%;
+}
+
+.loginSection{
+    background-color: #1F2937;
+    height: 100%;
+    padding: 10% 15%;
+    text-align: center;
+}
+
+.loginSection input{
+    width: 100%;
+}
+
+.loginSection h1{
+    font-size: 64px;
+}
