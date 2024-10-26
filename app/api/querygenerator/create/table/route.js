@@ -4,17 +4,17 @@ import isValidName from '../../../../../utils/validateName';
 
 export async function POST(req) {
     try {
-        const { userId, tablename, columns, databaseName } = await req.json();
+        const { tablename, columns, databaseName } = await req.json();
 
-        if (!userId || !tablename || !Array.isArray(columns) || columns.length === 0 || !databaseName) {
-            throw new Error('Invalid input: userId, tablename, columns, and databaseName are required.');
+        if (!tablename || !Array.isArray(columns) || columns.length === 0 || !databaseName) {
+            throw new Error('Invalid input: tablename, columns, and databaseName are required.');
         }
 
-        const userRole = await getUserRole(userId, databaseName);
+        //const userRole = await getUserRole(userId, databaseName);
 
-        if (userRole !== 'master' && userRole !== 'editor') {
-            throw new Error('Permission denied: You do not have the required permissions to create a table.');
-        }
+        // if (userRole !== 'master' && userRole !== 'editor') {
+        //     throw new Error('Permission denied: You do not have the required permissions to create a table.');
+        // }
 
         if (!isValidName(tablename)) {
             throw new Error('Invalid input: tablename contains invalid characters or special keywords.');

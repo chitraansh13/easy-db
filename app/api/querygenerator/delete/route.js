@@ -3,17 +3,17 @@ import getUserRole from '../../../../../utils/getUserRole';
 
 export async function POST(req) {
     try {
-        const { userId, tablename, conditions, databaseName } = await req.json();
+        const { tablename, conditions, databaseName } = await req.json();
 
-        if (!userId || !tablename || !databaseName) {
+        if (!tablename || !databaseName) {
             throw new Error('Invalid input: userId, tablename, and databaseName are required.');
         }
 
-        const userRole = await getUserRole(userId, databaseName);
+        // const userRole = await getUserRole(userId, databaseName);
 
-        if (userRole !== 'master' && userRole !== 'editor') {
-            throw new Error('Permission denied: You do not have the required permissions to delete from the table.');
-        }
+        // if (userRole !== 'master' && userRole !== 'editor') {
+        //     throw new Error('Permission denied: You do not have the required permissions to delete from the table.');
+        // }
 
         let query = `DELETE FROM ${tablename}`;
 

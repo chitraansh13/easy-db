@@ -3,9 +3,9 @@ import getUserRole from '../../../../../utils/getUserRole';
 
 export async function POST(req) {
     try {
-        const { userId, tablename, columns, values, databaseName } = await req.json();
+        const { tablename, columns, values, databaseName } = await req.json();
 
-        if (!userId || !tablename || !Array.isArray(columns) || columns.length === 0 || !Array.isArray(values) || values.length === 0 || !databaseName) {
+        if ( !tablename || !Array.isArray(columns) || columns.length === 0 || !Array.isArray(values) || values.length === 0 || !databaseName) {
             throw new Error('Invalid input: userId, tablename, columns, values, and databaseName are required.');
         }
 
@@ -13,11 +13,11 @@ export async function POST(req) {
             throw new Error('Invalid input: columns and values length mismatch.');
         }
 
-        const userRole = await getUserRole(userId, databaseName);
+        // const userRole = await getUserRole(userId, databaseName);
 
-        if (userRole !== 'master' && userRole !== 'editor') {
-            throw new Error('Permission denied: You do not have the required permissions to insert into the table.');
-        }
+        // if (userRole !== 'master' && userRole !== 'editor') {
+        //     throw new Error('Permission denied: You do not have the required permissions to insert into the table.');
+        // }
 
         const columnNames = columns.join(', ');
         const valuePlaceholders = values.map(value => {
