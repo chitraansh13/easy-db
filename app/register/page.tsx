@@ -1,15 +1,21 @@
 "use client"; // This is a client component
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import styles from './RegisterPage.module.css';
 
 const RegisterPage = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); // State for error message
+    const router = useRouter(); // Initialize useRouter
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent the default form submission
+
+        // Reset error message before submitting
+        setErrorMessage('');
 
         // Send POST request to the backend
         try {
@@ -22,17 +28,22 @@ const RegisterPage = () => {
             });
 
             if (response.ok) {
-                alert('User registered successfully!');
                 // Reset form fields
                 setUsername('');
                 setEmail('');
                 setPassword('');
+                
+                // Navigate to the /main page
+                router.push('/main');
             } else {
-                alert('Failed to register user.');
+                const data = await response.json();
+                // If the response contains an error message, set it
+                if (data.message) {
+                    setErrorMessage(data.message); // Set the error message
+                }
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('Error registering user.');
+            setErrorMessage('Error registering user.'); // Set a generic error message
         }
     };
 
@@ -65,6 +76,8 @@ const RegisterPage = () => {
                         />
                     </div>
                     <button type="submit">Create</button>
+                    {/* Display error message if it exists */}
+                    {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
                 </form>
             </div>
         </div>

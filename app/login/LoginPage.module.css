@@ -80,3 +80,9 @@
     font-size: clamp(16px, 2vw, 24px);
     text-decoration: underline;
 }
+
+.errorMessage {
+    color: red; /* Or any color you prefer */
+    margin-top: 10px; /* Space above the error message */
+    font-size: 0.9rem; /* Adjust font size as needed */
+}
