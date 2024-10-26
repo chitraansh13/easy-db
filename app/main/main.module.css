@@ -1,0 +1,45 @@
+.mainBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    background-color: #1F2937;
+    color: #CACACA;
+    padding: 5% 15%;
+    text-align: center;
+}
+
+.mainNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #374151;
+}
+
+.mainSide {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #111827;
+}
+
+.title {
+    margin-left: 150px;
+    font-size: 24px;
+    color: #CACACA;
+}
+
+.navLinks {
+    display: flex;
+    gap: 35px;
+    margin-right: 150px;
+}
+
+.loginLink .registerLink {
+    margin: 0;
+    cursor: pointer;
+    color: #CACACA;
+}

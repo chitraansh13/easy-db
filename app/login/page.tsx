@@ -8,13 +8,15 @@ const LoginPage = async () => {
         <div className={styles.loginBody}>
             <div className={styles.loginSection}>
                 <h1>Log in to your account.</h1>
-                <input type="text" placeholder='Email' />
-                <br />
-                <input type="text" placeholder='Password'/>
-                <br />
+                <div>
+                    <input type="text" placeholder='Email' />
+                    <br />
+                    <input type="password" placeholder='Password'/>
+                    <br />
+                </div>
                 <button>Login</button>
-                <br />
-                <a href="">New? Register here.</a>
+                <br /><br />
+                <a href="/register">New? Register here.</a>
             </div>
         </div>
     )
