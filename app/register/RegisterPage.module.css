@@ -20,7 +20,7 @@
     font-size: clamp(32px, 5vw, 72px);
     margin: 0;
     text-align: left;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .loginSection [type=text] {
