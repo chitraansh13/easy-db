@@ -1,15 +1,22 @@
 import { NextResponse } from 'next/server';
+import getUserRole from '../../../../../utils/getUserRole'; 
 
 export async function POST(req) {
     try {
-        const { tablename, columns, values } = await req.json();
+        const { userId, tablename, columns, values, databaseName } = await req.json();
 
-        if (!tablename || !Array.isArray(columns) || columns.length === 0 || !Array.isArray(values) || values.length === 0) {
-            throw new Error('Invalid input: tablename, columns, and values are required.');
+        if (!userId || !tablename || !Array.isArray(columns) || columns.length === 0 || !Array.isArray(values) || values.length === 0 || !databaseName) {
+            throw new Error('Invalid input: userId, tablename, columns, values, and databaseName are required.');
         }
 
         if (columns.length !== values.length) {
             throw new Error('Invalid input: columns and values length mismatch.');
+        }
+
+        const userRole = await getUserRole(userId, databaseName);
+
+        if (userRole !== 'master' && userRole !== 'editor') {
+            throw new Error('Permission denied: You do not have the required permissions to insert into the table.');
         }
 
         const columnNames = columns.join(', ');

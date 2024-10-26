@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import isValidName from '../../../../../utils/validateName'; 
 
 export async function POST(req) {
     try {
@@ -6,6 +7,10 @@ export async function POST(req) {
 
         if (!dbname) {
             throw new Error('Invalid input: dbname is required.');
+        }
+
+        if (!isValidName(dbname)) {
+            throw new Error('Invalid input: dbname contains invalid characters or special keywords.');
         }
 
         const query = `CREATE DATABASE ${dbname};`;
