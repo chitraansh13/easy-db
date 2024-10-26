@@ -1,6 +1,7 @@
 // app/api/querygenerator/create/db/route.ts
 import { NextResponse } from 'next/server';
 import { adminPool } from '../../../../lib/db'; // Ensure this imports the correct connection pool
+import isValidName from '../../../../../utils/validateName'; 
 
 export async function POST(req: Request) {
     try {
@@ -8,6 +9,10 @@ export async function POST(req: Request) {
 
         if (!dbname) {
             throw new Error('Invalid input: dbname is required.');
+        }
+
+        if (!isValidName(dbname)) {
+            throw new Error('Invalid input: dbname contains invalid characters or special keywords.');
         }
 
         const query = `CREATE DATABASE ${dbname};`;

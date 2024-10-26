@@ -1,11 +1,18 @@
 import { NextResponse } from 'next/server';
+import getUserRole from '../../../../../utils/getUserRole';
 
 export async function POST(req) {
     try {
-        const { tablename, conditions } = await req.json();
+        const { userId, tablename, conditions, databaseName } = await req.json();
 
-        if (!tablename) {
-            throw new Error('Invalid input: tablename is required.');
+        if (!userId || !tablename || !databaseName) {
+            throw new Error('Invalid input: userId, tablename, and databaseName are required.');
+        }
+
+        const userRole = await getUserRole(userId, databaseName);
+
+        if (userRole !== 'master' && userRole !== 'editor') {
+            throw new Error('Permission denied: You do not have the required permissions to delete from the table.');
         }
 
         let query = `DELETE FROM ${tablename}`;
