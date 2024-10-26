@@ -1,6 +1,6 @@
 // app/api/user-db/register/route.ts
 import { NextResponse } from 'next/server';
-import pool from '../../../lib/db';
+import { mainPool } from '../../../lib/db'; // Use mainPool for user registration
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -24,13 +24,15 @@ export async function POST(request: Request) {
     
     // Insert the user with the generated UUID
     const query = "INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4)";
-    await pool.query(query, [id, username, email, hashedPassword]);
+    await mainPool.query(query, [id, username, email, hashedPassword]);
     
     return NextResponse.json(
       { message: "User registered successfully!" },
       { status: 201 }
     );
   } catch (error) {
+    console.error("Error during registration:", error);
+    
     // Check for duplicate email error
     if (error instanceof Error && error.message.includes('unique_email')) {
       return NextResponse.json(

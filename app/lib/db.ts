@@ -1,14 +1,25 @@
-import { Pool } from 'pg';
-import { PoolConfig } from 'pg';
+import { Pool, PoolConfig } from 'pg';
 
-const config: PoolConfig = {
+// Configuration for the main database connection
+const mainConfig: PoolConfig = {
   user: "postgres",
   host: "localhost",
-  database: "easy-db",
+  database: "easy-db", // main database name
   password: "password",
   port: 5432,
 };
 
-const pool = new Pool(config);
+// Configuration for the admin connection (default 'postgres' database)
+const adminConfig: PoolConfig = {
+  user: "postgres",
+  host: "localhost",
+  database: "postgres", // default PostgreSQL database for admin operations
+  password: "password",
+  port: 5432,
+};
 
-export default pool;
+// Initialize pools
+const mainPool = new Pool(mainConfig);
+const adminPool = new Pool(adminConfig);
+
+export { mainPool, adminPool };
