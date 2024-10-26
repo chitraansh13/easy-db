@@ -1,0 +1,80 @@
+.landingBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    background-color: #111827;
+    color: #CACACA;
+    padding: 5% 15%;
+    text-align: center;
+}
+
+.landingNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #1F2937;
+}
+
+.title {
+    margin-left: 150px;
+    font-size: 24px;
+    color: #CACACA;
+}
+
+.navLinks {
+    display: flex;
+    gap: 35px;
+    margin-right: 150px;
+}
+
+.loginLink .registerLink {
+    margin: 0;
+    cursor: pointer;
+    color: #CACACA;
+}
+
+.tagline1 {
+    font-size: 50px;
+    font-weight: bold;
+    margin: 0;
+    color: #94A3B8;
+}
+
+.tagline2 {
+    font-size: 80px;
+    font-weight: bold;
+    margin: 0px 0;
+    color: #FFFFFF;
+    text-shadow: 2px 2px 5px #94A3B880;
+}
+
+.phrase {
+    font-size: 18px;
+    max-width: 700px;
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.getStarted {
+    font-size: 18px;
+    padding: 12px 24px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+.getStarted:hover {
+    background-color: #0056b3;
+}
+
+.landingImage {
+    margin-top: 20px;
+    max-width: 100%;
+    height: auto;
+}
