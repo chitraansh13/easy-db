@@ -1,25 +1,31 @@
 import { NextResponse } from 'next/server';
-import getUserRole from '../../../../../utils/getUserRole';
 
 export async function POST(req) {
     try {
-        const { tablename, conditions, databaseName } = await req.json();
+        const { tablename, deletetype, conditions} = await req.json();
 
-        if (!tablename || !databaseName) {
-            throw new Error('Invalid input: userId, tablename, and databaseName are required.');
-        }
-
-        // const userRole = await getUserRole(userId, databaseName);
-
-        // if (userRole !== 'master' && userRole !== 'editor') {
-        //     throw new Error('Permission denied: You do not have the required permissions to delete from the table.');
+        // if (!tablename || !databaseName) {
+        //     throw new Error('Invalid input: tablename and databaseName are required.');
         // }
 
         let query = `DELETE FROM ${tablename}`;
 
+        if(deletetype){
+
+            if (deletetype === 'first') {
+                query += ` WHERE ctid = (SELECT ctid FROM ${tablename} ORDER BY ctid LIMIT 1)`;
+            } else if (deletetype === 'last') {
+                query += ` WHERE ctid = (SELECT ctid FROM ${tablename} ORDER BY ctid DESC LIMIT 1)`;
+            } else {
+                throw new Error('Invalid delete type. Use "first" or "last".');
+            }
+        }
+
+
         if (conditions) {
             const { where, orderBy, limit } = conditions;
 
+            // Build WHERE clause
             if (where && Array.isArray(where) && where.length > 0) {
                 const whereClauses = where.map(condition => {
                     const { column, operator, value } = condition;
@@ -31,6 +37,7 @@ export async function POST(req) {
                 query += ` WHERE ${whereClauses.join(' AND ')}`;
             }
 
+            // Build ORDER BY clause
             if (orderBy && Array.isArray(orderBy) && orderBy.length > 0) {
                 const orderByClauses = orderBy.map(order => {
                     const { column, direction } = order;
@@ -42,6 +49,7 @@ export async function POST(req) {
                 query += ` ORDER BY ${orderByClauses.join(', ')}`;
             }
 
+            // Add LIMIT clause
             if (limit !== undefined) {
                 query += ` LIMIT ${limit}`;
             }

@@ -4,9 +4,9 @@ import { getColumnCount } from '../../../utils/getColumnCount';
 
 export async function POST(req) {
     try {
-        const { tablename, columns, values, databaseName } = await req.json();
+        const { tablename, columns, values } = await req.json();
 
-        if ( !tablename || !Array.isArray(columns) || columns.length === 0 || !Array.isArray(values) || values.length === 0 || !databaseName) {
+        if ( !tablename || !Array.isArray(columns) || columns.length === 0 || !Array.isArray(values) || values.length === 0) {
             throw new Error('Invalid input: userId, tablename, columns, values, and databaseName are required.');
         }
 
