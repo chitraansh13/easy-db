@@ -7,8 +7,9 @@ import Modal from './Modal';
 const CreateDbButton = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [query, setQuery] = useState('');
-    const [dbname, setDbname] = useState(''); // Store the db name to run the query
+    const [dbname, setDbname] = useState('');
 
+    // Function to create a new database
     const handleCreateDb = async () => {
         const dbNameInput = prompt("Enter the database name:");
         if (!dbNameInput) {
@@ -16,7 +17,7 @@ const CreateDbButton = () => {
             return;
         }
 
-        setDbname(dbNameInput); // Set dbname for later execution
+        setDbname(dbNameInput); // Store the database name for later execution
 
         try {
             const response = await fetch('/api/querygenerator/create/db', {
@@ -29,8 +30,8 @@ const CreateDbButton = () => {
 
             const data = await response.json();
             if (response.ok) {
-                setQuery(data.query);
-                setIsModalOpen(true); // Show the query in the modal
+                setQuery(data.query); // Set the generated query
+                setIsModalOpen(true);  // Open the modal to show the query
             } else {
                 alert(`Error: ${data.error}`);
             }
@@ -40,6 +41,7 @@ const CreateDbButton = () => {
         }
     };
 
+    // Function to run the generated SQL query
     const handleRunQuery = async () => {
         try {
             const response = await fetch('/api/querygenerator/create/db', {
@@ -60,7 +62,7 @@ const CreateDbButton = () => {
             const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
             alert('Error running query: ' + errorMessage);
         } finally {
-            setIsModalOpen(false); // Close modal after running query
+            setIsModalOpen(false); // Close modal after running the query
         }
     };
 

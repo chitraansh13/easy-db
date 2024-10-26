@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Poppins';
+  src: url('../app/fonts/Poppins-Medium.ttf') format('truetype');
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,4 +25,5 @@ body {
   color: var(--foreground);
   background: var(--background);
   /* Remove the font-family property here */
+  font-family: 'Poppins';
 }
