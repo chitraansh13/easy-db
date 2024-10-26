@@ -1,7 +1,8 @@
+// app/api/querygenerator/create/db/route.ts
 import { NextResponse } from 'next/server';
 import isValidName from '../../../../../utils/validateName'; 
 
-export async function POST(req) {
+export async function POST(req: Request) {
     try {
         const { dbname } = await req.json();
 
@@ -21,9 +22,9 @@ export async function POST(req) {
         );
 
     } catch (error) {
-        console.error('Error generating SQL query:', error.message);
+        console.error('Error generating SQL query:', error instanceof Error ? error.message : 'Unknown error');
         return NextResponse.json(
-            { error: error.message },
+            { error: error instanceof Error ? error.message : 'Unknown error' },
             { status: 400 }
         );
     }
