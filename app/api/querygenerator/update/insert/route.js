@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import getUserRole from '../../../../../utils/getUserRole'; 
+import { getColumnCount } from '../../../utils/getColumnCount';
 
 export async function POST(req) {
     try {
@@ -29,8 +30,10 @@ export async function POST(req) {
 
         const query = `INSERT INTO ${tablename} (${columnNames}) VALUES (${valuePlaceholders});`;
 
+        const columnCount = await getColumnCount(tablename);
+
         return NextResponse.json(
-            { message: 'SQL query generated successfully', query },
+            { message: 'SQL query generated successfully', query, columnCount },
             { status: 200 }
         );
 
