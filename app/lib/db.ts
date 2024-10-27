@@ -22,4 +22,15 @@ const adminConfig: PoolConfig = {
 const mainPool = new Pool(mainConfig);
 const adminPool = new Pool(adminConfig);
 
-export { mainPool, adminPool };
+// Function to create a new pool for a specified database
+const createDbPool = (dbName: string) => {
+    return new Pool({
+        user: "postgres",
+        host: "localhost",
+        database: dbName, // Use the specified database name
+        password: "password",
+        port: 5432,
+    });
+};
+
+export { mainPool, adminPool, createDbPool };
